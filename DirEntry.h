@@ -22,7 +22,8 @@ struct DirEntry {
   void serialize();
 };
 
-using DirContent = std::vector<DirEntry>;
-
+struct DirContent {
+  std::vector<DirEntry> entries;
+};
 
 #endif //DIRENTRY_H

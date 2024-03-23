@@ -25,7 +25,7 @@ void DirectoryReader::readAndStore(const std::string &dirPath) {
 
 uint64_t DirectoryReader::readDirRecur(const std::string &dirPath) {
     auto content = readDir(dirPath);
-    for (auto &entry : content)
+    for (auto &entry : content.entries)
         if ((entry.attr & DirEntry::ATTR_IS_DIR) != 0)
             entry.key = readDirRecur(dirPath + "/" + entry.name);
     XXHash64 hash(0);
@@ -52,7 +52,7 @@ DirContent DirectoryReader::readDir(const std::string &dirPath) {
                     entry.sectors = file_stat.st_blocks;
                     if (S_ISDIR(file_stat.st_mode))
                         entry.attr |= DirEntry::ATTR_IS_DIR;
-                    dirContent.push_back(entry);
+                    dirContent.entries.push_back(entry);
                 }
             }
         }
@@ -61,6 +61,6 @@ DirContent DirectoryReader::readDir(const std::string &dirPath) {
         perror("");
         return {};
     }
-    sort(dirContent.begin(), dirContent.end());
+    sort(dirContent.entries.begin(), dirContent.entries.end());
     return dirContent;
 }

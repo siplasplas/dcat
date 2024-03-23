@@ -19,13 +19,13 @@ void DBWriter::close() {
 
 void DBWriter::addContent(uint64_t h, DirContent &content) {
     int len = 0;
-    for (auto &entry: content) {
+    for (auto &entry: content.entries) {
         entry.serialize();
         len += entry.serialLen;
     }
     char *buf = new char[len];
     char *dest= buf;
-    for (auto &entry: content) {
+    for (auto &entry: content.entries) {
         memcpy(dest, entry.serialized, entry.serialLen);
         dest += entry.serialLen;
     }

@@ -9,7 +9,9 @@ DBReader::DBReader() {
     dbm.Get("0", &value);
     uint64_t x;
     deserializeBig(x, value.c_str());
-    cout << x;
+    string_view key(value);
+    dbm.Get(key, &value);
+    cout << value;
 }
 DBReader::~DBReader() {
     dbm.Close();
