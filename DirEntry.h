@@ -20,10 +20,12 @@ struct DirEntry {
   bool mayBeListed() const;
   int bufferSize();
   void serialize();
+  const char* deserialize(const char* s);
 };
 
 struct DirContent {
   std::vector<DirEntry> entries;
+  void deserialize(std::string_view value);
 };
 
 #endif //DIRENTRY_H

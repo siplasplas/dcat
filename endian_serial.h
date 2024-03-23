@@ -19,5 +19,6 @@ const char *deserializeBig(int32_t &x, const char *src);
 const char *deserializeBig(uint32_t &x, const char *src);
 const char *deserializeBig(int64_t &x, const char *src);
 const char *deserializeBig(uint64_t &x, const char *src);
+const char *deserializeString16Big(std::string &str, const char *dest);
 
 #endif //ENDIAN_SERIAL_H

@@ -2,6 +2,8 @@
 #include <endian.h>
 #include <cstring>
 
+using namespace std;
+
 char* serializeBig(int16_t x, char *dest) {
     *reinterpret_cast<int16_t*>(dest) = htobe16(x);
     return dest + sizeof(x);
@@ -60,3 +62,11 @@ const char *deserializeBig(uint64_t &x, const char *src) {
     return src + sizeof(x);
 }
 
+const char *deserializeString16Big(std::string &str, const char *dest) {
+    uint16_t len;
+    dest = deserializeBig(len, dest);
+    string str1(dest, len);
+    str = str1;
+    dest += len;
+    return dest;
+}

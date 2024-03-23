@@ -1,5 +1,6 @@
 #include "DBReader.h"
 #include "endian_serial.h"
+#include "DirEntry.h"
 
 using namespace std;
 
@@ -11,7 +12,11 @@ DBReader::DBReader() {
     deserializeBig(x, value.c_str());
     string_view key(value);
     dbm.Get(key, &value);
-    cout << value;
+    DirContent content;
+    content.deserialize(value);
+    for (auto &entry: content.entries)
+        printf("%s %ld\n",entry.name.c_str(), entry.size);
+
 }
 DBReader::~DBReader() {
     dbm.Close();
