@@ -8,8 +8,10 @@ struct DirEntry {
   int64_t size;
   int sectors;
   int64_t mtime;
-  int key;
+  uint16_t attr = 0;
+  int key = 0;
   std::string name;
+  static const uint16_t ATTR_IS_DIR = 1;
   bool operator<(const DirEntry& other) const {
       return name < other.name;
   }
@@ -27,10 +29,7 @@ struct DirEntry {
   }
 };
 
-struct DirContent {
-  std::vector<DirEntry> dirs;
-  std::vector<DirEntry> archives;
-  std::vector<DirEntry> files;
-};
+using DirContent = std::vector<DirEntry>;
+
 
 #endif //STRUCTS_H

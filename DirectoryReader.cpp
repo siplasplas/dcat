@@ -11,7 +11,7 @@
 namespace fs = std::filesystem;
 using namespace std;
 
-DirectoryReader::DirectoryReader(AbstractDBWriter &dbWriter):dbWriter(dbWriter) {
+DirectoryReader::DirectoryReader(AbstractDBWriter &dbWriter) : dbWriter(dbWriter) {
 }
 
 void DirectoryReader::readAndStore(const std::string &dirPath) {
@@ -22,8 +22,9 @@ void DirectoryReader::readAndStore(const std::string &dirPath) {
 
 uint64_t DirectoryReader::readDirRecur(const std::string &dirPath) {
     auto content = readDir(dirPath);
-    for (auto &entry : content.dirs)
-        entry.key = readDirRecur(dirPath + "/" + entry.name);
+    for (auto &entry : content)
+        if ((entry.attr & DirEntry::ATTR_IS_DIR) != 0)
+            entry.key = readDirRecur(dirPath + "/" + entry.name);
     XXHash64 hash(0);
     return hash.hash(dirPath.c_str(), dirPath.size(), 0);
 }
@@ -42,15 +43,11 @@ DirContent DirectoryReader::readDir(const std::string &dirPath) {
                     DirEntry entry;
                     entry.name = ent->d_name;
                     entry.size = file_stat.st_size;
-                    entry.key = 0;
                     entry.mtime = DirEntry::timeNanosecToWindows(file_stat.st_mtim);
                     entry.sectors = file_stat.st_blocks;
                     if (S_ISDIR(file_stat.st_mode))
-                        dirContent.dirs.emplace_back(entry);
-                    else if (entry.mayBeListed())
-                        dirContent.archives.emplace_back(entry);
-                    else
-                        dirContent.files.emplace_back(entry);
+                        entry.attr |= DirEntry::ATTR_IS_DIR;
+                    dirContent.push_back(entry);
                 }
             }
         }
@@ -59,6 +56,6 @@ DirContent DirectoryReader::readDir(const std::string &dirPath) {
         perror("");
         return {};
     }
-    sort(dirContent.dirs.begin(), dirContent.dirs.end());
+    sort(dirContent.begin(), dirContent.end());
     return dirContent;
 }
