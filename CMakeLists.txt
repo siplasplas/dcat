@@ -17,6 +17,7 @@ add_executable(${PROJECT_NAME} main.cpp
 target_link_libraries(${PROJECT_NAME} tkrzw)
 
 add_executable(gtest_dcat gtest_serialization.cpp
+        DirEntry.cpp DirEntry.h
         endian_serial.cpp endian_serial.h)
 
 target_link_libraries(gtest_dcat gtest gtest_main)

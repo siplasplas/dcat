@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "endian_serial.h"
+#include "DirEntry.h"
 
 using namespace std;
 
@@ -7,65 +8,116 @@ TEST(Serialization, int16) {
     int16_t n = -1234;
     char buf[10];
     const char *s = serializeBig(n, buf);
-    EXPECT_EQ(s-buf, 2);
+    EXPECT_EQ(s - buf, 2);
     int16_t n1;
-    s = deserializeBig(n1,buf);
+    s = deserializeBig(n1, buf);
     EXPECT_EQ(n1, n);
-    EXPECT_EQ(s-buf, 2);
+    EXPECT_EQ(s - buf, 2);
 }
 
 TEST(Serialization, uint16) {
     uint16_t n = 1234;
     char buf[10];
     const char *s = serializeBig(n, buf);
-    EXPECT_EQ(s-buf, 2);
+    EXPECT_EQ(s - buf, 2);
     uint16_t n1;
-    s = deserializeBig(n1,buf);
+    s = deserializeBig(n1, buf);
     EXPECT_EQ(n1, n);
-    EXPECT_EQ(s-buf, 2);
+    EXPECT_EQ(s - buf, 2);
 }
 
 TEST(Serialization, int32) {
     int32_t n = -12345678;
     char buf[10];
     const char *s = serializeBig(n, buf);
-    EXPECT_EQ(s-buf, 4);
+    EXPECT_EQ(s - buf, 4);
     int32_t n1;
-    s = deserializeBig(n1,buf);
+    s = deserializeBig(n1, buf);
     EXPECT_EQ(n1, n);
-    EXPECT_EQ(s-buf, 4);
+    EXPECT_EQ(s - buf, 4);
 }
 
 TEST(Serialization, uint32) {
     uint32_t n = 12345678;
     char buf[10];
     const char *s = serializeBig(n, buf);
-    EXPECT_EQ(s-buf, 4);
+    EXPECT_EQ(s - buf, 4);
     uint32_t n1;
-    s = deserializeBig(n1,buf);
+    s = deserializeBig(n1, buf);
     EXPECT_EQ(n1, n);
-    EXPECT_EQ(s-buf, 4);
+    EXPECT_EQ(s - buf, 4);
 }
 
 TEST(Serialization, int64) {
     int64_t n = -123456781234;
     char buf[10];
     const char *s = serializeBig(n, buf);
-    EXPECT_EQ(s-buf, 8);
+    EXPECT_EQ(s - buf, 8);
     int64_t n1;
-    s = deserializeBig(n1,buf);
+    s = deserializeBig(n1, buf);
     EXPECT_EQ(n1, n);
-    EXPECT_EQ(s-buf, 8);
+    EXPECT_EQ(s - buf, 8);
 }
-
 
 TEST(Serialization, uint64) {
     uint64_t n = 123456781234;
     char buf[10];
     const char *s = serializeBig(n, buf);
-    EXPECT_EQ(s-buf, 8);
+    EXPECT_EQ(s - buf, 8);
     uint64_t n1;
-    s = deserializeBig(n1,buf);
+    s = deserializeBig(n1, buf);
     EXPECT_EQ(n1, n);
-    EXPECT_EQ(s-buf, 8);
+    EXPECT_EQ(s - buf, 8);
+}
+
+TEST(Serialization, string) {
+    char buf[10];
+    string s1 = "abc";
+    const char *s = serializeString16Big(s1, buf);
+    EXPECT_EQ(s - buf, s1.size() + 2);
+    string s2;
+    s = deserializeString16Big(s2, buf);
+    EXPECT_EQ(s - buf, s1.size() + 2);
+    EXPECT_EQ(s2, s1);
+}
+
+TEST(Serialization, DirEntry) {
+    DirEntry de1;
+    de1.size = 1234;
+    de1.name = "name";
+    de1.serialize();
+    DirEntry de2;
+    de2.deserialize(de1.serialized);
+    EXPECT_EQ(de2, de1);
+}
+
+TEST(Serialization, DirContent) {
+    DirContent content1;
+    DirEntry de1;
+    de1.size = 1234;
+    de1.name = "name1";
+    content1.entries.push_back(de1);
+    de1.size = 5678;
+    de1.name = "name2";
+    content1.entries.push_back(de1);
+
+    int len = 0;
+    for (auto &entry : content1.entries) {
+        entry.serialize();
+        len += entry.serialLen;
+    }
+    char *buf = new char[len];
+    char *dest = buf;
+    for (auto &entry : content1.entries) {
+        memcpy(dest, entry.serialized, entry.serialLen);
+        dest += entry.serialLen;
+    }
+
+    DirContent content2;
+    content2.deserialize(string_view(buf, len));
+
+    EXPECT_EQ(content2.entries.size(), content1.entries.size());
+    for (int i=0; i<content2.entries.size(); i++) {
+        EXPECT_EQ(content2.entries[i], content1.entries[i]);
+    }
 }

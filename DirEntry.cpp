@@ -56,7 +56,7 @@ void DirContent::deserialize(string_view value) {
     entries.clear();
     const char *source = value.begin();
     size_t len = value.size();
-    while (len > 0) {
+    while (source < value.end()) {
         DirEntry dirEntry;
         source = dirEntry.deserialize(source);
         entries.push_back(dirEntry);
