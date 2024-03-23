@@ -4,6 +4,7 @@
 #include <cstring>
 #include "DirectoryReader.h"
 #include "DBWriter.h"
+#include "DBReader.h"
 
 using namespace std;
 
@@ -43,4 +44,5 @@ int main() {
     dirReader.readAndStore("..");
     st.stop();
     printf("\nduration = %f\n", st.duration());
+    DBReader dbReader;
 }

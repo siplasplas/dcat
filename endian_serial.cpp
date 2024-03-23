@@ -35,28 +35,28 @@ char *serializeString16Big(const std::string &str, char *dest) {
     return dest;
 }
 
-char *deserializeBig(int16_t &x, char *src) {
-    x = be16toh(*reinterpret_cast<int16_t*>(src));
+const char *deserializeBig(int16_t &x, const char *src) {
+    x = be16toh(*reinterpret_cast<const int16_t*>(src));
     return src + sizeof(x);
 }
-char *deserializeBig(uint16_t &x, char *src) {
-    x = be16toh(*reinterpret_cast<uint16_t*>(src));
+const char *deserializeBig(uint16_t &x, const char *src) {
+    x = be16toh(*reinterpret_cast<const uint16_t*>(src));
     return src + sizeof(x);
 }
-char *deserializeBig(int32_t &x, char *src) {
-    x = be32toh(*reinterpret_cast<int32_t*>(src));
+const char *deserializeBig(int32_t &x, const char *src) {
+    x = be32toh(*reinterpret_cast<const int32_t*>(src));
     return src + sizeof(x);
 }
-char *deserializeBig(uint32_t &x, char *src) {
-    x = be32toh(*reinterpret_cast<uint32_t*>(src));
+const char *deserializeBig(uint32_t &x, const char *src) {
+    x = be32toh(*reinterpret_cast<const uint32_t*>(src));
     return src + sizeof(x);
 }
-char *deserializeBig(int64_t &x, char *src) {
-    x = be64toh(*reinterpret_cast<int64_t*>(src));
+const char *deserializeBig(int64_t &x, const char *src) {
+    x = be64toh(*reinterpret_cast<const int64_t*>(src));
     return src + sizeof(x);
 }
-char *deserializeBig(uint64_t &x, char *src) {
-    x = be64toh(*reinterpret_cast<uint64_t*>(src));
+const char *deserializeBig(uint64_t &x, const char *src) {
+    x = be64toh(*reinterpret_cast<const uint64_t*>(src));
     return src + sizeof(x);
 }
 

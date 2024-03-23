@@ -15,9 +15,12 @@ DirectoryReader::DirectoryReader(AbstractDBWriter &dbWriter) : dbWriter(dbWriter
 }
 
 void DirectoryReader::readAndStore(const std::string &dirPath) {
+    dbWriter.open();
     string canonical = fs::canonical(dirPath);
     cout << canonical << endl;
-    readDirRecur(canonical);
+    auto h = readDirRecur(canonical);
+    dbWriter.addRoot(h);
+    dbWriter.close();
 }
 
 uint64_t DirectoryReader::readDirRecur(const std::string &dirPath) {

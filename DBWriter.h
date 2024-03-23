@@ -10,6 +10,9 @@ public:
   DBWriter();
   ~DBWriter() override;
   void addContent(uint64_t h, DirContent &content) override;
+  void addRoot(uint64_t h) override;
+  void open() override;
+  void close() override;
   void test(int len, int count);
 };
 

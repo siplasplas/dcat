@@ -1,12 +1,19 @@
 #include "DBWriter.h"
+#include "endian_serial.h"
 
 using namespace tkrzw;
 
 DBWriter::DBWriter() {
-    dbm.Open("dcat.tkt", true, File::OPEN_DEFAULT);
 }
 
 DBWriter::~DBWriter() {
+    close();
+}
+
+void DBWriter::open() {
+    dbm.Open("dcat.tkt", true);
+}
+void DBWriter::close() {
     dbm.Close();
 }
 
@@ -28,6 +35,15 @@ void DBWriter::addContent(uint64_t h, DirContent &content) {
     delete[] buf;
 }
 
+void DBWriter::addRoot(uint64_t h) {
+    char buf[8];
+    serializeBig(h, buf);
+    std::string_view value(buf, sizeof(h));
+    printf("root = %lu\n",h);
+    dbm.Set("0", value);
+}
+
+
 void DBWriter::test(int len, int count) {
     char fname[32];
     sprintf(fname, "%d_%d.tkt", len,count);
@@ -45,3 +61,4 @@ void DBWriter::test(int len, int count) {
     if (tobe)
         dbm1.Rebuild();
 }
+
