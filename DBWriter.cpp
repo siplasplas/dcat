@@ -33,5 +33,4 @@ void DBWriter::test(int len, int count) {
     dbm1.ShouldBeRebuilt(&tobe);
     if (tobe)
         dbm1.Rebuild();
-    printf("ShouldBeRebuilt=%b\n",tobe);
 }
