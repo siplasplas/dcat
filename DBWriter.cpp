@@ -53,3 +53,9 @@ void DBWriter::test(int len, int count) {
         dbm1.Rebuild();
 }
 
+void DBWriter::rebuild() {
+    dbm.Open("dcat.tkt", true);
+    dbm.Rebuild();
+    dbm.Close();
+}
+

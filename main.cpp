@@ -41,8 +41,9 @@ int main() {
     DirectoryReader dirReader(dbWriter);
     Stopwatch st;
     st.start();
-    dirReader.readAndStore("..");
+    dirReader.readAndStore("/media/andrzej/673F-F8CD");
+    //dbWriter.rebuild();
     st.stop();
     printf("\nduration = %f\n", st.duration());
-    DBReader dbReader;
+    //DBReader dbReader;
 }

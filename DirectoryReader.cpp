@@ -35,6 +35,9 @@ uint64_t DirectoryReader::readDirRecur(const std::string &dirPath) {
 }
 
 DirContent DirectoryReader::readDir(const std::string &dirPath) {
+    static int counter = 0;
+    counter++;
+    printf("%d\n",counter);
     DIR *dir;
     struct dirent *ent;
     struct stat file_stat{};

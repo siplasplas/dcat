@@ -14,6 +14,7 @@ public:
   void open() override;
   void close() override;
   void test(int len, int count);
+  void rebuild();
 };
 
 #endif //DBWRITER_H

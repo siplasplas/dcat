@@ -12,6 +12,7 @@ class DirectoryReader {
 public:
   explicit DirectoryReader(AbstractDBWriter &dbWriter);
   void readAndStore(const std::string &dirPath);
+  void rebuild();
 };
 
 #endif //DIRECTORYREADER_H
