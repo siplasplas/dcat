@@ -4,17 +4,28 @@ using namespace tkrzw;
 
 DBWriter::DBWriter() {
     dbm.Open("dcat.tkt", true, File::OPEN_DEFAULT);
-    dbm.Set("foo", "hop");
-    dbm.Set("bar", "step");
-    dbm.Set("baz", "jump");
 }
 
 DBWriter::~DBWriter() {
     dbm.Close();
 }
 
-void DBWriter::addContent(DirContent &content) {
-
+void DBWriter::addContent(uint64_t h, DirContent &content) {
+    int len = 0;
+    for (auto &entry: content) {
+        entry.serialize();
+        len += entry.serialLen;
+    }
+    char *buf = new char[len];
+    char *dest= buf;
+    for (auto &entry: content) {
+        memcpy(dest, entry.serialized, entry.serialLen);
+        dest += entry.serialLen;
+    }
+    std::string_view key(reinterpret_cast<const char*>(&h), sizeof(h));
+    std::string_view value(buf, dest-buf);
+    dbm.Set(key, value);
+    delete[] buf;
 }
 
 void DBWriter::test(int len, int count) {

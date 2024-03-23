@@ -10,7 +10,8 @@ add_executable(${PROJECT_NAME} main.cpp
         AbstractDBWriter.h
         DBWriter.cpp DBWriter.h
         DBReader.cpp DBReader.h
-        structs.h
+        DirEntry.cpp DirEntry.h
+        endian_serial.cpp endian_serial.h
 )
 
 target_link_libraries(${PROJECT_NAME} tkrzw)

@@ -26,7 +26,9 @@ uint64_t DirectoryReader::readDirRecur(const std::string &dirPath) {
         if ((entry.attr & DirEntry::ATTR_IS_DIR) != 0)
             entry.key = readDirRecur(dirPath + "/" + entry.name);
     XXHash64 hash(0);
-    return hash.hash(dirPath.c_str(), dirPath.size(), 0);
+    uint64_t h = hash.hash(dirPath.c_str(), dirPath.size(), 0);
+    dbWriter.addContent(h, content);
+    return h;
 }
 
 DirContent DirectoryReader::readDir(const std::string &dirPath) {
