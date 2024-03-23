@@ -3,14 +3,21 @@
 #include <algorithm>
 #include <cstring>
 #include <fcntl.h>
+#include <filesystem>
+#include <iostream>
 #include "xxhash64.h"
 #include "DirectoryReader.h"
+
+namespace fs = std::filesystem;
+using namespace std;
 
 DirectoryReader::DirectoryReader(AbstractDBWriter &dbWriter):dbWriter(dbWriter) {
 }
 
 void DirectoryReader::readAndStore(const std::string &dirPath) {
-    readDirRecur(dirPath);
+    string canonical = fs::canonical(dirPath);
+    cout << canonical << endl;
+    readDirRecur(canonical);
 }
 
 uint64_t DirectoryReader::readDirRecur(const std::string &dirPath) {

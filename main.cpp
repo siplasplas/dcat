@@ -40,7 +40,7 @@ int main() {
     DirectoryReader dirReader(dbWriter);
     Stopwatch st;
     st.start();
-    dirReader.readAndStore("/media/andrzej/Crucial X8/last_linux/wazne");
+    dirReader.readAndStore("..");
     st.stop();
     printf("\nduration = %f\n", st.duration());
 }
