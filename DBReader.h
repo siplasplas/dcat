@@ -8,6 +8,7 @@ class DBReader {
 public:
   DBReader();
   ~DBReader();
+  void process(uint64_t key);
 };
 
 #endif //DBREADER_H
