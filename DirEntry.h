@@ -9,7 +9,7 @@ struct DirEntry {
   int sectors = 0;
   int64_t mtime = 0;
   uint16_t attr = 0;
-  int key = 0;
+  uint64_t key = 0;
   std::string name;
   char *serialized = nullptr;
   int serialLen = 0;
