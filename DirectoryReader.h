@@ -12,11 +12,11 @@ struct DirContent {
 
 
 class DirectoryReader {
-  AbstractDBWriter *dbWriter;
+  AbstractDBWriter &dbWriter;
   DirContent readDir(const std::string &dirPath);
   void readDirRecur(const std::string &dirPath);
 public:
-  explicit DirectoryReader(AbstractDBWriter *dbWriter);
+  explicit DirectoryReader(AbstractDBWriter &dbWriter);
   void readAndStore(const std::string &dirPath);
 };
 

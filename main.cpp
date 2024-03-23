@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cstring>
 #include "DirectoryReader.h"
+#include "DBWriter.h"
 
 using namespace std;
 
@@ -35,7 +36,8 @@ void readMount() {
 }
 
 int main() {
-    DirectoryReader dirReader(new AbstractDBWriter);
+    DBWriter dbWriter;
+    DirectoryReader dirReader(dbWriter);
     Stopwatch st;
     st.start();
     dirReader.readAndStore("/media/andrzej/Crucial X8/last_linux/wazne");

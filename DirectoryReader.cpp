@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include "DirectoryReader.h"
 
-DirectoryReader::DirectoryReader(AbstractDBWriter *dbWriter):dbWriter(dbWriter) {
+DirectoryReader::DirectoryReader(AbstractDBWriter &dbWriter):dbWriter(dbWriter) {
 }
 
 void DirectoryReader::readAndStore(const std::string &dirPath) {
