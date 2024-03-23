@@ -16,7 +16,7 @@ void DirectoryReader::readAndStore(const std::string &dirPath) {
 uint64_t DirectoryReader::readDirRecur(const std::string &dirPath) {
     auto content = readDir(dirPath);
     for (auto &entry : content.dirs)
-        readDirRecur(dirPath + "/" + entry.name);
+        entry.key = readDirRecur(dirPath + "/" + entry.name);
     XXHash64 hash(0);
     return hash.hash(dirPath.c_str(), dirPath.size(), 0);
 }
