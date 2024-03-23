@@ -12,3 +12,7 @@ DBWriter::DBWriter() {
 DBWriter::~DBWriter() {
     dbm.Close();
 }
+
+void DBWriter::addContent(DirContent &content) {
+
+}

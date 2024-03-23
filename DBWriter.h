@@ -9,6 +9,7 @@ class DBWriter: public AbstractDBWriter {
 public:
   DBWriter();
   ~DBWriter() override;
+  void addContent(DirContent &content) override;
 };
 
 #endif //DBWRITER_H

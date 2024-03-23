@@ -5,12 +5,6 @@
 #include <vector>
 #include "AbstractDBWriter.h"
 
-struct DirContent {
-  std::vector<std::string> dirs;
-  std::vector<std::string> files;
-};
-
-
 class DirectoryReader {
   AbstractDBWriter &dbWriter;
   DirContent readDir(const std::string &dirPath);
