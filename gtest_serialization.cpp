@@ -101,20 +101,10 @@ TEST(Serialization, DirContent) {
     de1.name = "name2";
     content1.entries.push_back(de1);
 
-    int len = 0;
-    for (auto &entry : content1.entries) {
-        entry.serialize();
-        len += entry.serialLen;
-    }
-    char *buf = new char[len];
-    char *dest = buf;
-    for (auto &entry : content1.entries) {
-        memcpy(dest, entry.serialized, entry.serialLen);
-        dest += entry.serialLen;
-    }
+    content1.serialize();
 
     DirContent content2;
-    content2.deserialize(string_view(buf, len));
+    content2.deserialize(string_view(content1.serialized, content1.serialLen));
 
     EXPECT_EQ(content2.entries.size(), content1.entries.size());
     for (int i=0; i<content2.entries.size(); i++) {

@@ -18,21 +18,12 @@ void DBWriter::close() {
 }
 
 void DBWriter::addContent(uint64_t h, DirContent &content) {
-    int len = 0;
-    for (auto &entry: content.entries) {
-        entry.serialize();
-        len += entry.serialLen;
-    }
-    char *buf = new char[len];
-    char *dest= buf;
-    for (auto &entry: content.entries) {
-        memcpy(dest, entry.serialized, entry.serialLen);
-        dest += entry.serialLen;
-    }
-    std::string_view key(reinterpret_cast<const char*>(&h), sizeof(h));
-    std::string_view value(buf, dest-buf);
+    char buf[sizeof(h)];
+    serializeBig(h, buf);
+    std::string_view key(buf, sizeof(h));
+    content.serialize();
+    std::string_view value(content.serialized, content.serialLen);
     dbm.Set(key, value);
-    delete[] buf;
 }
 
 void DBWriter::addRoot(uint64_t h) {

@@ -29,7 +29,11 @@ struct DirEntry {
 };
 
 struct DirContent {
+  ~DirContent() {delete serialized;}
+  char *serialized = nullptr;
+  int serialLen = 0;
   std::vector<DirEntry> entries;
+  void serialize();
   void deserialize(std::string_view value);
 };
 

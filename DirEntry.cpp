@@ -1,3 +1,4 @@
+#include <cstring>
 #include "DirEntry.h"
 #include "endian_serial.h"
 
@@ -60,5 +61,20 @@ void DirContent::deserialize(string_view value) {
         DirEntry dirEntry;
         source = dirEntry.deserialize(source);
         entries.push_back(dirEntry);
+    }
+}
+
+void DirContent::serialize() {
+    serialLen = 0;
+    delete serialized;
+    for (auto &entry : entries) {
+        entry.serialize();
+        serialLen += entry.serialLen;
+    }
+    serialized = new char[serialLen];
+    char *dest = serialized;
+    for (auto &entry : entries) {
+        memcpy(dest, entry.serialized, entry.serialLen);
+        dest += entry.serialLen;
     }
 }
