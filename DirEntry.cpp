@@ -8,8 +8,12 @@ bool DirEntry::operator<(const DirEntry &other) const {
     return name < other.name;
 }
 
+const uint32_t WinToUnixDateDelta = 134774;// between January 1, 1601 and January 1, 1970
+const uint32_t WinUnitsInSec = 10 * 1000 * 1000;// 100-nanosecond intervals
+
 int64_t DirEntry::timeNanosecToWindows(timespec &unixTimeSpec) {
-    return 0;
+    return (int64_t) unixTimeSpec.tv_sec * WinUnitsInSec + unixTimeSpec.tv_nsec / 100
+        + (int64_t)WinToUnixDateDelta*24*3600*WinUnitsInSec;
 }
 
 bool DirEntry::mayBeListed() const {
