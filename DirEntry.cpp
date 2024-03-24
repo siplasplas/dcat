@@ -1,6 +1,6 @@
 #include <cstring>
 #include "DirEntry.h"
-#include "endian_serial.h"
+#include "VLQ.h"
 
 using namespace std;
 
@@ -31,29 +31,29 @@ void DirEntry::serialize() {
     delete serialized;
     serialized = new char[bufferSize()];
     auto dest = serialized;
-    dest = serializeBig(size, dest);
-    dest = serializeBig(sectors, dest);
-    dest = serializeBig(mtime, dest);
-    dest = serializeBig(attr, dest);
-    dest = serializeBig(key, dest);
-    dest = serializeString16Big(name, dest);
+    dest = VLQ::to_seq(size, dest);
+    dest = VLQ::to_seq(sectors, dest);
+    dest = VLQ::to_seq(mtime, dest);
+    dest = VLQ::to_seq(attr, dest);
+    dest = VLQ::to_seq(key, dest);
+    dest = VLQ::string_to_seq(name, dest);
     serialLen = dest - serialized;
 }
 
-int DirEntry::bufferSize() {
-    return sizeof(size) + sizeof(sectors)
-        + sizeof(mtime) + sizeof(attr)
-        + sizeof(key) + 2 + name.size();
+size_t DirEntry::bufferSize() const {
+    return VLQ::number_len(size) + VLQ::number_len(sectors)
+        + VLQ::number_len(mtime) + VLQ::number_len(attr)
+        + VLQ::number_len(key) + VLQ::string_len(name);
 }
 
 const char *DirEntry::deserialize(const char *s) {
     delete serialized;
-    s = deserializeBig(size, s);
-    s = deserializeBig(sectors, s);
-    s = deserializeBig(mtime, s);
-    s = deserializeBig(attr, s);
-    s = deserializeBig(key, s);
-    s = deserializeString16Big(name, s);
+    s = VLQ::from_seq(s, size);
+    s = VLQ::from_seq(s, sectors);
+    s = VLQ::from_seq(s, mtime);
+    s = VLQ::from_seq(s, attr);
+    s = VLQ::from_seq(s, key);
+    s = VLQ::string_from_seq(s, name);
     return s;
 }
 

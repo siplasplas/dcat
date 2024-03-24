@@ -6,10 +6,10 @@
 #include <ctime>
 
 struct DirEntry {
-  int64_t size = 0;
-  int64_t sectors = 0;
-  int64_t mtime = 0;
-  uint16_t attr = 0;
+  uint64_t size = 0;
+  uint64_t sectors = 0;
+  uint64_t mtime = 0;
+  uint64_t attr = 0;
   uint64_t key = 0;
   std::string name;
   char *serialized = nullptr;
@@ -19,7 +19,7 @@ struct DirEntry {
   bool operator<(const DirEntry &other) const;
   static int64_t timeNanosecToWindows(timespec &unixTimeSpec);
   bool mayBeListed() const;
-  int bufferSize();
+  size_t bufferSize() const;
   void serialize();
   const char *deserialize(const char *s);
   bool operator==(const DirEntry &other) const {

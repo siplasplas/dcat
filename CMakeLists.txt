@@ -11,7 +11,6 @@ add_executable(${PROJECT_NAME} main.cpp
         DBWriter.cpp DBWriter.h
         DBReader.cpp DBReader.h
         DirEntry.cpp DirEntry.h
-        endian_serial.cpp endian_serial.h
         UTF.hpp
         VLQ.cpp VLQ.h
 )
@@ -19,12 +18,10 @@ add_executable(${PROJECT_NAME} main.cpp
 target_link_libraries(${PROJECT_NAME} tkrzw)
 
 add_executable(gtest_dcat
-        gtest_serial_big.cpp
         gtest_serial_vlq.cpp
         gtest_filestamp.cpp
         DirEntry.cpp DirEntry.h
-        endian_serial.cpp endian_serial.h
         VLQ.cpp VLQ.h
-        )
+)
 
 target_link_libraries(gtest_dcat gtest gtest_main)

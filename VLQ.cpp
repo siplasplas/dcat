@@ -2,7 +2,7 @@
 #include <cstring>
 #include "VLQ.h"
 
-uint8_t *VLQ::to_seq(uint64_t x, uint8_t *out)
+char *VLQ::to_seq(uint64_t x, char *out)
 {
     int i, j;
     for (i = 9; i > 0; i--) {
@@ -24,7 +24,7 @@ int VLQ::number_len(uint64_t x)
     return i + 1;
 }
 
-uint8_t *VLQ::from_seq(uint8_t *in, uint64_t &result)
+const char *VLQ::from_seq(const char *in, uint64_t &result)
 {
     uint64_t r = 0;
 
@@ -36,13 +36,13 @@ uint8_t *VLQ::from_seq(uint8_t *in, uint64_t &result)
     return in;
 }
 
-uint8_t *VLQ::string_to_seq(const std::string &s, uint8_t *out) {
+char *VLQ::string_to_seq(const std::string &s, char *out) {
     out = to_seq(s.size(), out);
     memcpy(out, s.c_str(), s.size());
     return out + s.size();
 }
 
-uint8_t *VLQ::string_from_seq(uint8_t *in, std::string &s) {
+const char *VLQ::string_from_seq(const char *in, std::string &s) {
     uint64_t len;
     in = from_seq(in, len);
     std::string str1((char*)in, len);

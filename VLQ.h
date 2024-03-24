@@ -5,10 +5,10 @@
 #include <string>
 
 struct VLQ {
-    static uint8_t *to_seq(uint64_t x, uint8_t *out);
-    static uint8_t *from_seq(uint8_t *in, uint64_t &result);
-    static uint8_t *string_to_seq(const std::string &s, uint8_t *out);
-    static uint8_t *string_from_seq(uint8_t *in, std::string &s);
+    static char *to_seq(uint64_t x, char *out);
+    static const char *from_seq(const char *in, uint64_t &result);
+    static char *string_to_seq(const std::string &s, char *out);
+    static const char *string_from_seq(const char *in, std::string &s);
     static int number_len(uint64_t x);
     static size_t string_len(const std::string &s);
 };

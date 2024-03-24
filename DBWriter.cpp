@@ -1,5 +1,5 @@
 #include "DBWriter.h"
-#include "endian_serial.h"
+#include "VLQ.h"
 
 using namespace tkrzw;
 
@@ -18,18 +18,18 @@ void DBWriter::close() {
 }
 
 void DBWriter::addContent(uint64_t h, DirContent &content) {
-    char buf[sizeof(h)];
-    serializeBig(h, buf);
-    std::string_view key(buf, sizeof(h));
+    char buf[10];
+    char *end = VLQ::to_seq(h, buf);
+    std::string_view key(buf, end - buf);
     content.serialize();
     std::string_view value(content.serialized, content.serialLen);
     dbm.Set(key, value);
 }
 
 void DBWriter::addRoot(uint64_t h) {
-    char buf[8];
-    serializeBig(h, buf);
-    std::string_view value(buf, sizeof(h));
+    char buf[10];
+    char *end = VLQ::to_seq(h, buf);
+    std::string_view value(buf, end - buf);
     printf("root = %lu\n",h);
     dbm.Set("0", value);
 }
