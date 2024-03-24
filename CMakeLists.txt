@@ -12,6 +12,7 @@ add_executable(${PROJECT_NAME} main.cpp
         DBReader.cpp DBReader.h
         DirEntry.cpp DirEntry.h
         UTF.hpp
+        endian_serial.cpp endian_serial.h
         VLQ.cpp VLQ.h
 )
 
@@ -21,7 +22,9 @@ add_executable(gtest_dcat
         gtest_serial_vlq.cpp
         gtest_filestamp.cpp
         DirEntry.cpp DirEntry.h
+        endian_serial.cpp endian_serial.h
         VLQ.cpp VLQ.h
+        gtest_serial_big.cpp
 )
 
 target_link_libraries(gtest_dcat gtest gtest_main)

@@ -1,5 +1,6 @@
 #include "DBReader.h"
 #include "DirEntry.h"
+#include "endian_serial.h"
 #include "VLQ.h"
 
 using namespace std;
@@ -17,10 +18,10 @@ DBReader::~DBReader() {
 }
 
 void DBReader::process(uint64_t key) {
-    char buf[10];
-    char *end = VLQ::to_seq(key, buf);
+    char buf[8];
+    serializeBig(key, buf);
     string value;
-    dbm.Get(string_view(buf, end-buf), &value);
+    dbm.Get(string_view(buf, sizeof(key)), &value);
     DirContent content;
     content.deserialize(value);
     for (auto &entry : content.entries)

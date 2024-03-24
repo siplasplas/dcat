@@ -80,34 +80,3 @@ TEST(Serialization, string) {
     EXPECT_EQ(s - buf, s1.size() + 2);
     EXPECT_EQ(s2, s1);
 }
-
-TEST(Serialization, DirEntry) {
-    DirEntry de1;
-    de1.size = 1234;
-    de1.name = "name";
-    de1.serialize();
-    DirEntry de2;
-    de2.deserialize(de1.serialized);
-    EXPECT_EQ(de2, de1);
-}
-
-TEST(Serialization, DirContent) {
-    DirContent content1;
-    DirEntry de1;
-    de1.size = 1234;
-    de1.name = "name1";
-    content1.entries.push_back(de1);
-    de1.size = 5678;
-    de1.name = "name2";
-    content1.entries.push_back(de1);
-
-    content1.serialize();
-
-    DirContent content2;
-    content2.deserialize(string_view(content1.serialized, content1.serialLen));
-
-    EXPECT_EQ(content2.entries.size(), content1.entries.size());
-    for (int i=0; i<content2.entries.size(); i++) {
-        EXPECT_EQ(content2.entries[i], content1.entries[i]);
-    }
-}

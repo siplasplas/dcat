@@ -5,7 +5,7 @@
 using namespace std;
 
 TEST(VLQ, n4) {
-    uint8_t expectedSeq[] = { 0x81, 0xFF, 0xFF, 0x7E };
+    char expectedSeq[] = { (char)0x81, -1, -1, (char)0x7E };
     uint64_t numberToConvert = 0x3FFFFE;
     char resultSeq[10];
     long len1 = VLQ::to_seq(numberToConvert, resultSeq) - resultSeq;
