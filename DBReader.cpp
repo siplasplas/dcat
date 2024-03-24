@@ -24,7 +24,7 @@ void DBReader::process(uint64_t key) {
     DirContent content;
     content.deserialize(value);
     for (auto &entry : content.entries)
-        printf("%s %ld %llu\n", entry.name.c_str(), entry.size, entry.key);
+        printf("%s %ld %lu\n", entry.name.c_str(), entry.size, entry.key);
     for (auto &entry : content.entries)
         if (entry.key)
             process(entry.key);

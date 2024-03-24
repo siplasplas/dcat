@@ -3,10 +3,11 @@
 
 #include <vector>
 #include <string>
+#include <ctime>
 
 struct DirEntry {
   int64_t size = 0;
-  int sectors = 0;
+  int64_t sectors = 0;
   int64_t mtime = 0;
   uint16_t attr = 0;
   uint64_t key = 0;

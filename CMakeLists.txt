@@ -12,6 +12,7 @@ add_executable(${PROJECT_NAME} main.cpp
         DBReader.cpp DBReader.h
         DirEntry.cpp DirEntry.h
         endian_serial.cpp endian_serial.h
+        UTF.hpp
 )
 
 target_link_libraries(${PROJECT_NAME} tkrzw)

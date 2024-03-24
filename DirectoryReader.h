@@ -5,7 +5,15 @@
 #include <vector>
 #include "AbstractDBWriter.h"
 
+struct StatFS {
+    unsigned int blkSize;
+    unsigned int clusterSize;
+    long toatalClusters;
+    long freeClusters;
+};
+
 class DirectoryReader {
+  StatFS statfs;
   AbstractDBWriter &dbWriter;
   DirContent readDir(const std::string &dirPath);
   uint64_t readDirRecur(const std::string &dirPath);
