@@ -12,7 +12,9 @@ DBWriter::~DBWriter() {
 }
 
 void DBWriter::open() {
-    dbm.Open("dcat.tkt", true);
+    TreeDBM::TuningParameters tuning_params{};
+    tuning_params.record_comp_mode = tkrzw::HashDBM::RECORD_COMP_LZ4;
+    dbm.OpenAdvanced("dcat.tkt", true, File::OPEN_DEFAULT, tuning_params);
 }
 void DBWriter::close() {
     dbm.Close();
