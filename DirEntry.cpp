@@ -32,28 +32,28 @@ void DirEntry::serialize() {
     delete serialized;
     serialized = new char[bufferSize()];
     auto dest = serialized;
-    dest = serializeBig(key, dest);
     dest = VLQ::to_seq(size, dest);
     dest = VLQ::to_seq(sectors, dest);
     dest = VLQ::to_seq(mtime, dest);
     dest = VLQ::to_seq(attr, dest);
+    dest = VLQ::to_seq(key, dest);
     dest = VLQ::string_to_seq(name, dest);
     serialLen = dest - serialized;
 }
 
 size_t DirEntry::bufferSize() const {
-    return sizeof(key) + VLQ::number_len(size) + VLQ::number_len(sectors)
+    return VLQ::number_len(size) + VLQ::number_len(sectors)
         + VLQ::number_len(mtime) + VLQ::number_len(attr)
-        + VLQ::string_len(name);
+        + VLQ::number_len(key) + VLQ::string_len(name);
 }
 
 const char *DirEntry::deserialize(const char *s) {
     delete serialized;
-    s = deserializeBig(key, s);
     s = VLQ::from_seq(s, size);
     s = VLQ::from_seq(s, sectors);
     s = VLQ::from_seq(s, mtime);
     s = VLQ::from_seq(s, attr);
+    s = VLQ::from_seq(s, key);
     s = VLQ::string_from_seq(s, name);
     return s;
 }
